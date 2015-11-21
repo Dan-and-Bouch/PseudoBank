@@ -7,21 +7,28 @@ s.bind(address)
 incomingPOS = 0
 incomingPhone = 0
 
+
+
+phone_address = ("10.83.3.245", 7000)
+
+
+
 s.listen(1)
 while True:
-    connection, client_address = s.accept()
+    pos_connection, pos_address = s.accept()
     print "hi"
-    incomingPOS = connection.recv(1024)
-    connection.close()
-    connection, client_address = s.accept()
-    incomingPhone = connection.recv(1024)
-    analysis(incomingPOS, incomingPhone)
-    # thing = incomingPOS.split(',')
-    # print thing
-    # break
-# print type(incoming)
-# incoming = str(incoming)
-# print type(incoming)
-#
-# s.close()
-# print thing
+    incomingPOS = pos_connection.recv(1024)
+    # phone_connection, phone_address = s.accept()
+    p = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    socket.setdefaulttimeout(5)
+    p.connect(phone_address)
+    incomingPhone = p.recv(1024)
+    if analysis(incomingPOS, incomingPhone):
+        pos_connection.send("1")
+        print "yay"
+    else:
+        pos_connection.send("0")
+        print "nay"
+
+    pos_connection.close()
+    p.close()
