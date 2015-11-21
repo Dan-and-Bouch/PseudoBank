@@ -28,6 +28,7 @@ while True:
         print "yay"
     else:
         pos_connection.send("0")
+        print incomingPOS, " ----- ", incomingPhone
         print "nay"
 
     pos_connection.close()
