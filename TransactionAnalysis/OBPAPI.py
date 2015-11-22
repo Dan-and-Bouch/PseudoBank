@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from requests_oauthlib import OAuth1Session
 # oauth flow in simple words: http://pyoauth.readthedocs.org/en/latest/guides/oauth1.html
+
 base_url = "https://ulsterbank.openbankproject.com"
 request_token_url = base_url + "/oauth/initiate"
 authorization_base_url = base_url + "/oauth/authorize"
@@ -26,7 +27,7 @@ def auth():
     return bank
 
 
-def transact(amount):
+def transact(amount, openbank):
     # get accounts for a specific bank
     our_bank = 'ulster-ni'
     # print "Available accounts"
@@ -62,7 +63,7 @@ def transact(amount):
     return dictthing[u'transaction_id']
 
 
-def get_balance():
+def get_balance(openbank):
     # get accounts for a specific bank
     our_bank = 'ulster-ni'
     # print "Available accounts"
@@ -80,16 +81,16 @@ def get_balance():
     transactions = r.json()['transactions']
     # print transactions[0]
     transaction = transactions[0]
-    return transaction[u'metadata'][u'where']#[u'amount']
+    return transaction[u'details'][u'new_balance'][u'amount']
 
 
-openbank = auth()
-
-print get_balance()
-
-transact("1")
-
-print get_balance()
+# openbank = auth()
+#
+# print get_balance()
+#
+# transact("1")
+#
+# print get_balance()
 # {u'metadata': {u'images': [], u'tags': [], u'where': None, u'comments': [], u'narrative': None}, u'other_account':
 #  {u'kind': u'CURRENT', u'number': u'3105304', u'swift_bic': None, u'IBAN': None, u'holder':
 #  {u'name': u'', u'is_alias': False},
