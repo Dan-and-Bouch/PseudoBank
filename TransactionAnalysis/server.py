@@ -51,7 +51,7 @@ while True:
             else:
                 pos_connection.send("0")
                 print incomingPOS, " ----- ", incomingPhone
-                print "nay"
+                # print "nay"
     except Exception:
         pos_connection.send("0")
         print incomingPOS, " ----- ", incomingPhone
