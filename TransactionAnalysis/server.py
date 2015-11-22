@@ -8,6 +8,7 @@ s.bind(address)
 incomingPOS = 0
 incomingPhone = 0
 openbank = auth()
+pos_connection = None
 
 phone_address = ("10.83.3.245", 7000)
 
@@ -15,27 +16,27 @@ s.listen(1)
 while True:
     try:
         pos_connection, pos_address = s.accept()
-        print "hi"
+        # print "hi"
         incomingPOS = pos_connection.recv(1024)
         # phone_connection, phone_address = s.accept()
         p = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        print "uuuggghhhh"
+        # print "uuuggghhhh"
         p.settimeout(5)
         p.connect(phone_address)
-        print "ugh"
+        # print "ugh"
         try:
             incomingPhone = p.recv(1024)
         except Exception:
             pos_connection.send("0")
             print incomingPOS, " ----- ", incomingPhone
-            print "nay"
+            # print "nay"
 
-        print incomingPhone
+        # print incomingPhone
 
         if incomingPhone is None:
             pos_connection.send("0")
             print incomingPOS, " ----- ", incomingPhone
-            print "nay"
+            # print "nay"
 
         else:
             if analysis(incomingPOS, incomingPhone):
@@ -46,12 +47,13 @@ while True:
                 transact("1000", openbank)
 
                 print get_balance(openbank)
-                print "yay"
+                # print "yay"
             else:
                 pos_connection.send("0")
                 print incomingPOS, " ----- ", incomingPhone
                 print "nay"
     except Exception:
-        pass
-
+        pos_connection.send("0")
+        print incomingPOS, " ----- ", incomingPhone
+        # print "nay"
 # 1458
